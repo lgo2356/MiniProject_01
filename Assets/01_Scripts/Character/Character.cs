@@ -6,4 +6,9 @@ public abstract class Character : MonoBehaviour
     protected Animator animator;
     protected new Rigidbody rigidbody;
     #endregion
+
+    private void Test()
+    {
+        print("Git Test");
+    }
 }
