@@ -9,6 +9,6 @@ public abstract class Character : MonoBehaviour
 
     private void Test()
     {
-        print("Git Test");
+        
     }
 }
