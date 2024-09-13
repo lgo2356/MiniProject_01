@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34701a7119d7d3f4286f22a851e1c457, type: 3}
+  m_Name: EnemySpawnPoint
+  m_EditorClassIdentifier: 
+  MapSize: {x: -10, y: 8.5}
+  EnemyPrefab: {fileID: 1055255165286198381, guid: 3f5db560cee1aae4696185645cc5fb3e, type: 3}
+  SpawnCount: 3
+  SpawnPoints:
+  - {x: 4.822174, y: 7.9101663}
+  - {x: 1.5122428, y: 3.3452475}
+  - {x: -0.50589085, y: 3.5744143}
