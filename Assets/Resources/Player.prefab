@@ -338,10 +338,11 @@ GameObject:
   m_Component:
   - component: {fileID: 9204827497187789135}
   - component: {fileID: 8122805832514596615}
-  - component: {fileID: 5575203640715761913}
-  - component: {fileID: 815030301984206596}
   - component: {fileID: 8883704910343362828}
   - component: {fileID: 4133577706015848869}
+  - component: {fileID: 6424080646038380223}
+  - component: {fileID: 815030301984206596}
+  - component: {fileID: 5575203640715761913}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -394,36 +395,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5575203640715761913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1571804503450177831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ced6eed7902e684ba1aa8a44633aa9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  swordPrefab: {fileID: 4489677676252728369, guid: 0020f4db931e1b5478041ad57b6b22b1, type: 3}
-  mouseSpeed: 0.25
-  limitPitchAngle: {x: 20, y: 340}
---- !u!114 &815030301984206596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1571804503450177831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a52ff82d832caa48aac11c4e804bcd4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraTargetName: CameraTarget
-  walkSpeed: 1
-  runSpeed: 3
 --- !u!136 &8883704910343362828
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -474,6 +445,49 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &6424080646038380223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571804503450177831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea12f05fd9b5f6541a39132bb5ed7b03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHp: 100
+--- !u!114 &815030301984206596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571804503450177831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a52ff82d832caa48aac11c4e804bcd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraTargetName: CameraTarget
+  walkSpeed: 1
+  runSpeed: 3
+--- !u!114 &5575203640715761913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571804503450177831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ced6eed7902e684ba1aa8a44633aa9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  swordPrefab: {fileID: 4489677676252728369, guid: 0020f4db931e1b5478041ad57b6b22b1, type: 3}
+  mouseSpeed: 0.25
+  limitPitchAngle: {x: 20, y: 340}
 --- !u!1 &1578988648127180301
 GameObject:
   m_ObjectHideFlags: 0

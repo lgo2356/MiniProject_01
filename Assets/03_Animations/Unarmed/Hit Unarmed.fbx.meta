@@ -5,7 +5,7 @@ ModelImporter:
   internalIDToNameTable:
   - first:
       74: -5115221373887988638
-    second: hit_body_back
+    second: Hit Unarmed
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,7 +36,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: hit_body_back
+      name: Hit Unarmed
       takeName: hit_body_back
       internalID: 0
       firstFrame: 0
@@ -60,7 +60,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.9138533
+      - time: 0.25502974
         functionName: End_Hit
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 8ced6eed7902e684ba1aa8a44633aa9f, type: 3}

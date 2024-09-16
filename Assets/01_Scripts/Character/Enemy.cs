@@ -1,21 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(HpComponent))]
-public class Enemy : Character, IDamagable
+public partial class Enemy : Character, IDamagable
 {
+    [SerializeField]
+    private WeaponActionData attackAactionData;
+
+    #region Public Method
+    public Action<Enemy> OnDead;
+    #endregion
+
     #region Component
     private HpComponent hpComponent;
     private EnemyMoveState moveState;
     private EnemyScanComponent scanComponent;
+    private Collider attackCollider;
     #endregion
 
     #region Valuable
     private List<Material> materialList;
     private List<Color> originColorList;
+    private List<GameObject> hittedList;
     #endregion
 
     #region Coroutine
@@ -38,6 +47,7 @@ public class Enemy : Character, IDamagable
 
         materialList = new();
         originColorList = new();
+        hittedList = new();
 
         Renderer[] renderers = GetComponentsInChildren<Renderer>();
 
@@ -49,15 +59,65 @@ public class Enemy : Character, IDamagable
                 originColorList.Add(material.color);
             }
         }
+
+        attackCollider = transform.FindChildByName("AttackBox")
+            .GetComponent<Collider>();
+        attackCollider.enabled = false;
     }
 
     private void Start()
     {
         StaggerFrameManager.Instance.AddAnimator(gameObject.GetInstanceID(), animator);
+        GameRuleManager.Instance.RegisterEnemy(this);
 
         patrolCoroutine = StartCoroutine(Coroutine_Patrol(0f));
         //moveState.Destination = GetRandomPosition();
         //moveState.MoveSpeed = 1f;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer != LayerMask.NameToLayer("Player"))
+        {
+            return;
+        }
+
+        foreach (GameObject go in hittedList)
+        {
+            if (go == other.gameObject)
+                return;
+        }
+
+        hittedList.Add(other.gameObject);
+
+        if (other.gameObject.TryGetComponent<Player>(out Player player))
+        {
+            IDamagable damagable = other.gameObject.GetComponent<IDamagable>();
+
+            Vector3 hitPoint = attackCollider.ClosestPoint(other.transform.position);  // World (로컬 * 월드 * 뷰 * 프로젝션)
+            hitPoint = other.transform.InverseTransformPoint(hitPoint);  // 로컬 * 월드 * 월드 역행렬 => 로컬
+
+            if (damagable != null)
+            {
+                damagable.Damage(gameObject, null, hitPoint, attackAactionData);
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+
+    }
+
+    public void EnableAttackCollider()
+    {
+        attackCollider.enabled = true;
+    }
+
+    public void DisableAttackCollider()
+    {
+        attackCollider.enabled = false;
+        hittedList.Clear();
     }
 
     public void Damage(GameObject attacker, Sword causer, Vector3 hitPoint, WeaponActionData actionData)
@@ -87,6 +147,8 @@ public class Enemy : Character, IDamagable
         {
             animator.SetTrigger("DoDeath");
             gameObject.GetComponent<Collider>().enabled = false;
+
+            OnDead?.Invoke(this);
         }
         else
         {
@@ -197,7 +259,7 @@ public class Enemy : Character, IDamagable
                 moveState.Destination = transform.position;
                 moveState.MoveSpeed = 0f;
 
-                animator.SetBool("Attack", true);
+                //animator.SetBool("Attack", true);
 
                 yield return wait;
             }
@@ -209,29 +271,6 @@ public class Enemy : Character, IDamagable
 
             yield return null;
         }
-    }
-
-    private void End_Attack()
-    {
-        animator.SetBool("Attack", false);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.layer != LayerMask.NameToLayer("Player"))
-        {
-            return;
-        }
-
-        if (other.gameObject.TryGetComponent<Player>(out Player player))
-        {
-            player.OnDamaged(5f);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        
     }
 
     private void OnDrawGizmosSelected()

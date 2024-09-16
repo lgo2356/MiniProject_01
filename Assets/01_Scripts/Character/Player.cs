@@ -1,7 +1,8 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public partial class Player : Character
+public partial class Player : Character, IDamagable
 {
     [SerializeField]
     private GameObject swordPrefab;
@@ -13,11 +14,17 @@ public partial class Player : Character
     private Vector2 limitPitchAngle = new(20, 340);
 
     /**
+     * Public Method
+     */
+    public Action<Player> OnDead;
+
+    /**
      * Compoent
      */
     private Transform swordHolsterTransform;
     private Transform swordSlotTransform;
     private PlayerMoveState moveState;
+    private HpComponent hpComponent;
 
     /**
      * Valuable
@@ -28,8 +35,10 @@ public partial class Player : Character
 
     private void Awake()
     {
+        rigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         moveState = GetComponent<PlayerMoveState>();
+        hpComponent = GetComponent<HpComponent>();
     }
 
     private void Start()
@@ -46,6 +55,7 @@ public partial class Player : Character
         }
 
         StaggerFrameManager.Instance.AddAnimator(gameObject.GetInstanceID(), animator);
+        GameRuleManager.Instance.RegisterPlayer(this);
 
         LockCursor();        
     }
@@ -55,11 +65,6 @@ public partial class Player : Character
         Update_CamearTarget();
         Update_InputEquip();
         Update_InputAttack();
-    }
-
-    public void OnDamaged(float amount)
-    {
-        animator.SetBool("Hit", true);
     }
 
     private void LockCursor()
@@ -102,8 +107,22 @@ public partial class Player : Character
         transform.rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0);
     }
 
-    private void End_Hit()
+    public void Damage(GameObject attacker, Sword causer, Vector3 hitPoint, WeaponActionData actionData)
     {
-        animator.SetBool("Hit", false);
+        hpComponent.Damage(actionData.Power);
+
+        if (hpComponent.IsDead == false)
+        {
+            animator.SetTrigger("DoHit");
+        }
+        else
+        {
+            animator.SetTrigger("DoDeath");
+            rigidbody.useGravity = false;
+            rigidbody.isKinematic = true;
+            gameObject.GetComponent<Collider>().enabled = false;
+
+            OnDead?.Invoke(this);
+        }
     }
 }

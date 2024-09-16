@@ -636,7 +636,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea12f05fd9b5f6541a39132bb5ed7b03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 100
+  maxHp: 15
 --- !u!114 &4012687183370211874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -649,6 +649,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 151df7a9c98360f4fadc740e2cec234b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackAactionData:
+    Power: 20
+    KnockbackDist: 0
+    StaggerFrame: 0
+    CameraShakeDuration: 0
+    CameraShakeDirection: {x: 0, y: 0, z: 0}
+    Particle: {fileID: 0}
+    ParticleOffset: {x: 0, y: 0, z: 0}
+    ParticleScale: {x: 1, y: 1, z: 1}
 --- !u!114 &3476637290057582668
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -157,4 +157,16 @@ public partial class Player
         sword.DisableCollision();
     }
     #endregion
+
+    #region Hit Animation Events
+    private void Begin_Hit()
+    {
+        //animator.SetBool("Hit", false);
+    }
+
+    private void End_Hit()
+    {
+        
+    }
+    #endregion
 }

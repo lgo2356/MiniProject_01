@@ -679,6 +679,20 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.245224
+        functionName: Begin_Collision
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 151df7a9c98360f4fadc740e2cec234b, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.7101898
+        functionName: End_Collision
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 151df7a9c98360f4fadc740e2cec234b, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1
