@@ -259,7 +259,7 @@ public partial class Enemy : Character, IDamagable
                 moveState.Destination = transform.position;
                 moveState.MoveSpeed = 0f;
 
-                //animator.SetBool("Attack", true);
+                animator.SetBool("Attack", true);
 
                 yield return wait;
             }

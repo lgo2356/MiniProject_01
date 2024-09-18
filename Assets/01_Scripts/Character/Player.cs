@@ -63,8 +63,29 @@ public partial class Player : Character, IDamagable
     private void Update()
     {
         Update_CamearTarget();
-        Update_InputEquip();
-        Update_InputAttack();
+        Update_KeyInputEquip();
+        Update_KeyInputAttack();
+    }
+
+    public void Damage(GameObject attacker, Sword causer, Vector3 hitPoint, WeaponActionData actionData)
+    {
+        ResetFlag();
+
+        hpComponent.Damage(actionData.Power);
+
+        if (hpComponent.IsDead == false)
+        {
+            animator.SetTrigger("DoHit");
+        }
+        else
+        {
+            animator.SetTrigger("DoDeath");
+            rigidbody.useGravity = false;
+            rigidbody.isKinematic = true;
+            gameObject.GetComponent<Collider>().enabled = false;
+
+            OnDead?.Invoke(this);
+        }
     }
 
     private void LockCursor()
@@ -105,24 +126,5 @@ public partial class Player : Character, IDamagable
 
         cameraTargetTransform.localEulerAngles = new(angle.x, 0, 0);
         transform.rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0);
-    }
-
-    public void Damage(GameObject attacker, Sword causer, Vector3 hitPoint, WeaponActionData actionData)
-    {
-        hpComponent.Damage(actionData.Power);
-
-        if (hpComponent.IsDead == false)
-        {
-            animator.SetTrigger("DoHit");
-        }
-        else
-        {
-            animator.SetTrigger("DoDeath");
-            rigidbody.useGravity = false;
-            rigidbody.isKinematic = true;
-            gameObject.GetComponent<Collider>().enabled = false;
-
-            OnDead?.Invoke(this);
-        }
     }
 }

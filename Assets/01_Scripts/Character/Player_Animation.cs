@@ -13,7 +13,7 @@ public partial class Player
 
     public int ComboIndex { get => comboIndex; }
 
-    private void Update_InputEquip()
+    private void Update_KeyInputEquip()
     {
         if (Input.GetButtonDown("GreateSword") == false)
             return;
@@ -38,7 +38,7 @@ public partial class Player
         }
     }
 
-    private void Update_InputAttack()
+    private void Update_KeyInputAttack()
     {
         if (Input.GetButtonDown("Attack") == false)
             return;
@@ -75,6 +75,15 @@ public partial class Player
         isAttacking = true;
 
         animator.SetBool("Attack", true);
+    }
+
+    private void ResetFlag()
+    {
+        isAttacking = false;
+        isComboEnabled = false;
+        isComboExist = false;
+
+        comboIndex = 0;
     }
 
     private void Begin_Equip()
@@ -162,11 +171,12 @@ public partial class Player
     private void Begin_Hit()
     {
         //animator.SetBool("Hit", false);
+        moveState.enabled = false;
     }
 
     private void End_Hit()
     {
-        
+        moveState.enabled = true;
     }
     #endregion
 }
