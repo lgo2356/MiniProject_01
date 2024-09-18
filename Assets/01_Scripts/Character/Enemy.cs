@@ -259,7 +259,7 @@ public partial class Enemy : Character, IDamagable
                 moveState.Destination = transform.position;
                 moveState.MoveSpeed = 0f;
 
-                animator.SetBool("Attack", true);
+                Attack();
 
                 yield return wait;
             }
@@ -271,6 +271,20 @@ public partial class Enemy : Character, IDamagable
 
             yield return null;
         }
+    }
+
+    private void Attack()
+    {
+        //if (isComboEnabled)
+        //{
+        //    isComboEnabled = false;
+        //    isComboExist = true;
+
+        //    return;
+        //}
+        isComboExist = true;
+
+        animator.SetBool("Attack", true);
     }
 
     private void OnDrawGizmosSelected()

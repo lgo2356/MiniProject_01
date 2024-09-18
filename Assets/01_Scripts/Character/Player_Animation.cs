@@ -43,11 +43,6 @@ public partial class Player
         if (Input.GetButtonDown("Attack") == false)
             return;
 
-        //bool check = false;
-        //check |= (isEquipped == false);
-        //check |= (isDrawing);
-        //check |= (isSheathing);
-
         if (isEquipped == false)
             return;
 
@@ -56,9 +51,6 @@ public partial class Player
 
         if (isSheathing)
             return;
-
-        //if (check == false)
-        //    return;
 
         if (isComboEnabled)
         {
@@ -170,7 +162,6 @@ public partial class Player
     #region Hit Animation Events
     private void Begin_Hit()
     {
-        //animator.SetBool("Hit", false);
         moveState.enabled = false;
     }
 
