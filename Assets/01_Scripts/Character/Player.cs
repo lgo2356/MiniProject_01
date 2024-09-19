@@ -2,10 +2,13 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
-public partial class Player : Character, IDamagable
+public partial class Player : Character, IDamagable, IBlockable
 {
     [SerializeField]
     private GameObject swordPrefab;
+
+    [SerializeField]
+    private GameObject shieldPrefab;
 
     [SerializeField]
     private float mouseSpeed = 0.25f;
@@ -23,6 +26,7 @@ public partial class Player : Character, IDamagable
      */
     private Transform swordHolsterTransform;
     private Transform swordSlotTransform;
+    private Transform shieldSlotTransform;
     private PlayerMoveState moveState;
     private HpComponent hpComponent;
 
@@ -32,6 +36,7 @@ public partial class Player : Character, IDamagable
     private Sword sword;
     private Quaternion rotation;
     private Transform cameraTargetTransform;
+    private bool isShieldBlocking = false;
 
     private void Awake()
     {
@@ -47,11 +52,17 @@ public partial class Player : Character, IDamagable
 
         swordHolsterTransform = transform.FindChildByName("Holster_Sword");
         swordSlotTransform = transform.FindChildByName("WeaponSlot_Sword");
+        shieldSlotTransform = transform.FindChildByName("WeaponSlot_Shield");
 
         if (swordPrefab != null)
         {
             GameObject instance = Instantiate(swordPrefab, swordHolsterTransform);
             sword = instance.GetComponent<Sword>();
+        }
+
+        if (shieldPrefab != null)
+        {
+            GameObject go = Instantiate(shieldPrefab, shieldSlotTransform);
         }
 
         StaggerFrameManager.Instance.AddAnimator(gameObject.GetInstanceID(), animator);
@@ -65,11 +76,18 @@ public partial class Player : Character, IDamagable
         Update_CamearTarget();
         Update_KeyInputEquip();
         Update_KeyInputAttack();
+        Update_KeyInputShieldBlock();
     }
 
     public void Damage(GameObject attacker, Sword causer, Vector3 hitPoint, WeaponActionData actionData)
     {
         ResetFlag();
+
+        if (isShieldBlocking)
+        {
+            animator.SetTrigger("DoShieldBlockImpact");
+            return;
+        }
 
         hpComponent.Damage(actionData.Power);
 
@@ -86,6 +104,11 @@ public partial class Player : Character, IDamagable
 
             OnDead?.Invoke(this);
         }
+    }
+
+    public bool IsBlocked(GameObject attacker)
+    {
+        return isShieldBlocking;
     }
 
     private void LockCursor()

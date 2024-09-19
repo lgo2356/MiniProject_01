@@ -90,16 +90,21 @@ public partial class Enemy : Character, IDamagable
 
         hittedList.Add(other.gameObject);
 
-        if (other.gameObject.TryGetComponent<Player>(out Player player))
+        if (other.gameObject.TryGetComponent<IDamagable>(out IDamagable damagable))
         {
-            IDamagable damagable = other.gameObject.GetComponent<IDamagable>();
-
             Vector3 hitPoint = attackCollider.ClosestPoint(other.transform.position);  // World (로컬 * 월드 * 뷰 * 프로젝션)
             hitPoint = other.transform.InverseTransformPoint(hitPoint);  // 로컬 * 월드 * 월드 역행렬 => 로컬
 
-            if (damagable != null)
+            damagable.Damage(gameObject, null, hitPoint, attackAactionData);
+        }
+
+        if (other.gameObject.TryGetComponent(out IBlockable blockable))
+        {
+            bool isBlocked = blockable.IsBlocked(gameObject);
+
+            if (isBlocked)
             {
-                damagable.Damage(gameObject, null, hitPoint, attackAactionData);
+                animator.SetTrigger("DoHit");
             }
         }
     }

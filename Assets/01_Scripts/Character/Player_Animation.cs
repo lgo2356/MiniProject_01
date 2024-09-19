@@ -69,6 +69,33 @@ public partial class Player
         animator.SetBool("Attack", true);
     }
 
+    private void Update_KeyInputShieldBlock()
+    {
+        if (isDrawing)
+            return;
+
+        if (isSheathing)
+            return;
+
+        if (isAttacking)
+            return;
+
+        if (Input.GetButtonDown("ShieldBlock"))
+        {
+            animator.SetBool("ShieldBlock", true);
+        }
+        else if (Input.GetButtonUp("ShieldBlock"))
+        {
+            animator.SetBool("ShieldBlock", false);
+
+            isShieldBlocking = false;
+        }
+        else
+        {
+            return;
+        }
+    }
+
     private void ResetFlag()
     {
         isAttacking = false;
@@ -170,4 +197,9 @@ public partial class Player
         moveState.enabled = true;
     }
     #endregion
+
+    private void Begin_ShieldBlock()
+    {
+        isShieldBlocking = true;
+    }
 }

@@ -486,6 +486,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swordPrefab: {fileID: 4489677676252728369, guid: 0020f4db931e1b5478041ad57b6b22b1, type: 3}
+  shieldPrefab: {fileID: 4673569360129911192, guid: f461decfbd89c954b901e3b02980b581, type: 3}
   mouseSpeed: 0.25
   limitPitchAngle: {x: 20, y: 340}
 --- !u!1 &1578988648127180301
@@ -3810,7 +3811,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2103700579493266711}
   m_Layer: 0
-  m_Name: PT_Left_Hand_Shield_slot
+  m_Name: WeaponSlot_Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
