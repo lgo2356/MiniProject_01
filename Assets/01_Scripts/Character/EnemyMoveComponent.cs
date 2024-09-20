@@ -4,7 +4,7 @@ using UnityEngine;
 /**
  * 컴포넌트가 활성화 되어 있고 목적지 정보가 있으면 움직이는 로직
  */
-public class EnemyMoveState : MonoBehaviour
+public class EnemyMoveComponent : MonoBehaviour
 {
     public Vector3 Destination;
     public float MoveSpeed;
@@ -16,11 +16,6 @@ public class EnemyMoveState : MonoBehaviour
         animator = GetComponent<Animator>();
         
         Destination = transform.position;
-    }
-
-    private void Start()
-    {
-        
     }
 
     private void Update()
@@ -46,16 +41,6 @@ public class EnemyMoveState : MonoBehaviour
         animator.SetFloat("SpeedZ", 0f);
 
         Destination = transform.position;
-    }
-
-    public void Enable(float delay = 0f)
-    {
-        StartCoroutine(Coroutine_Enable(delay));
-    }
-
-    public void Disable(float delay = 0f)
-    {
-
     }
 
     private IEnumerator Coroutine_Enable(float delay)

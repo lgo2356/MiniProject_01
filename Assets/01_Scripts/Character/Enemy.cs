@@ -22,8 +22,9 @@ public partial class Enemy : Character, IDamagable
 
     #region Component
     private HpComponent hpComponent;
-    private EnemyMoveState moveState;
+    private EnemyMoveComponent moveComponent;
     private EnemyScanComponent scanComponent;
+    private EnemyPatrolComponent patrolComponent;
     #endregion
 
     #region Valuable
@@ -35,7 +36,6 @@ public partial class Enemy : Character, IDamagable
     #endregion
 
     #region Coroutine
-    private Coroutine patrolCoroutine;
     private Coroutine chasePlayerCoroutine;
     #endregion
 
@@ -44,7 +44,8 @@ public partial class Enemy : Character, IDamagable
         animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody>();
         hpComponent = GetComponent<HpComponent>();
-        moveState = GetComponent<EnemyMoveState>();
+        moveComponent = GetComponent<EnemyMoveComponent>();
+        patrolComponent = GetComponent<EnemyPatrolComponent>();
         
         scanComponent = GetComponent<EnemyScanComponent>();
         {
@@ -86,14 +87,15 @@ public partial class Enemy : Character, IDamagable
         StaggerFrameManager.Instance.AddAnimator(gameObject.GetInstanceID(), animator);
         GameRuleManager.Instance.RegisterEnemy(this);
 
-        patrolCoroutine = StartCoroutine(Coroutine_Patrol(0f));
+        patrolComponent.StartPatrol();
 
         Block();
     }
 
     public void Damage(GameObject attacker, Sword causer, Vector3 hitPoint, WeaponActionData actionData)
     {
-        StopCoroutine(patrolCoroutine);
+        patrolComponent.StopPatrol();
+
         animator.SetFloat("SpeedZ", 0f);
 
         hpComponent.Damage(actionData.Power);
@@ -158,51 +160,11 @@ public partial class Enemy : Character, IDamagable
         }
     }
 
-    private IEnumerator Coroutine_Patrol(float delay = 0f)
-    {
-        yield return new WaitForSeconds(delay);
-
-        WaitForFixedUpdate wait = new();
-        
-        bool isFirst = true;
-
-        moveState.Destination = transform.position;
-
-        while (true)
-        {
-            if (Vector3.Distance(moveState.Destination, transform.position) < 0.1f)
-            {
-                float waitTime = UnityEngine.Random.Range(1f, 3f);
-
-                if (isFirst)
-                {
-                    isFirst = false;
-                    waitTime = 0f;
-                }
-
-                yield return new WaitForSeconds(waitTime);
-
-                moveState.Destination = GetRandomPosition();
-                moveState.MoveSpeed = 1f;
-            }
-
-            yield return wait;
-        }
-    }
-
-    private Vector3 GetRandomPosition()
-    {
-        float x = UnityEngine.Random.Range(-10f, 10f);
-        float z = UnityEngine.Random.Range(-8.5f, 8.5f);
-
-        return new Vector3(x, 0f, z);
-    }
-
     private void OnFoundPlayer(Player player)
     {
         Debug.Log("OnFoundPlayer");
 
-        StopCoroutine(patrolCoroutine);
+        patrolComponent.StopPatrol();
 
         chasePlayerCoroutine = StartCoroutine(Coroutine_ChasePlayer(player));
     }
@@ -213,10 +175,10 @@ public partial class Enemy : Character, IDamagable
 
         StopCoroutine(chasePlayerCoroutine);
 
-        patrolCoroutine = StartCoroutine(Coroutine_Patrol(3f));
+        patrolComponent.StartPatrol(3f);
 
-        moveState.Destination = transform.position;
-        moveState.MoveSpeed = 0f;
+        moveComponent.Destination = transform.position;
+        moveComponent.MoveSpeed = 0f;
     }
 
     private IEnumerator Coroutine_ChasePlayer(Player player)
@@ -227,8 +189,8 @@ public partial class Enemy : Character, IDamagable
         {
             if (Vector3.Distance(player.transform.position, transform.position) <= scanComponent.AttackRange)
             {
-                moveState.Destination = transform.position;
-                moveState.MoveSpeed = 0f;
+                moveComponent.Destination = transform.position;
+                moveComponent.MoveSpeed = 0f;
 
                 //Attack();
 
@@ -236,8 +198,8 @@ public partial class Enemy : Character, IDamagable
             }
             else
             {
-                moveState.Destination = player.transform.position;
-                moveState.MoveSpeed = 2f;
+                moveComponent.Destination = player.transform.position;
+                moveComponent.MoveSpeed = 2f;
             }
 
             yield return null;
