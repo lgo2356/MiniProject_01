@@ -25,6 +25,7 @@ public partial class Enemy : Character, IDamagable
     private EnemyMoveComponent moveComponent;
     private EnemyScanComponent scanComponent;
     private EnemyPatrolComponent patrolComponent;
+    private EnemyChaseComponent chaseComponent;
     #endregion
 
     #region Valuable
@@ -35,10 +36,6 @@ public partial class Enemy : Character, IDamagable
     private Sword_Enemy sword;
     #endregion
 
-    #region Coroutine
-    private Coroutine chasePlayerCoroutine;
-    #endregion
-
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -46,6 +43,7 @@ public partial class Enemy : Character, IDamagable
         hpComponent = GetComponent<HpComponent>();
         moveComponent = GetComponent<EnemyMoveComponent>();
         patrolComponent = GetComponent<EnemyPatrolComponent>();
+        chaseComponent = GetComponent<EnemyChaseComponent>();
         
         scanComponent = GetComponent<EnemyScanComponent>();
         {
@@ -166,41 +164,18 @@ public partial class Enemy : Character, IDamagable
 
         patrolComponent.StopPatrol();
 
-        chasePlayerCoroutine = StartCoroutine(Coroutine_ChasePlayer(player));
+        chaseComponent.StartChase(player.gameObject);
     }
 
     private void OnLostPlayer()
     {
         Debug.Log("OnLostPlayer");
 
-        StopCoroutine(chasePlayerCoroutine);
+        chaseComponent.StopChase();
 
         patrolComponent.StartPatrol(3f);
 
         moveComponent.StopMove();
-    }
-
-    private IEnumerator Coroutine_ChasePlayer(Player player)
-    {
-        WaitForSeconds wait = new WaitForSeconds(2f);
-
-        while (true)
-        {
-            if (Vector3.Distance(player.transform.position, transform.position) <= scanComponent.AttackRange)
-            {
-                moveComponent.StopMove();
-
-                //Attack();
-
-                yield return wait;
-            }
-            else
-            {
-                moveComponent.SetMove(player.transform.position, 2f);
-            }
-
-            yield return null;
-        }
     }
 
     private void Attack()
