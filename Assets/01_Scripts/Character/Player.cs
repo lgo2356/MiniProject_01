@@ -14,7 +14,7 @@ public partial class Player : Character, IDamagable, IBlockable
     private float mouseSpeed = 0.25f;
 
     [SerializeField]
-    private Vector2 limitPitchAngle = new(20, 340);
+    private Vector2 pitchAngleLimit = new(20, 340);
 
     /**
      * Public Method
@@ -49,7 +49,6 @@ public partial class Player : Character, IDamagable, IBlockable
     private void Start()
     {
         cameraTargetTransform = transform.FindChildByName("CameraTarget");
-
         swordHolsterTransform = transform.FindChildByName("Holster_Sword");
         swordSlotTransform = transform.FindChildByName("WeaponSlot_Sword");
         shieldSlotTransform = transform.FindChildByName("WeaponSlot_Shield");
@@ -138,10 +137,10 @@ public partial class Player : Character, IDamagable, IBlockable
 
         float xAngle = cameraTargetTransform.localEulerAngles.x;
 
-        if (xAngle < 180f && xAngle > limitPitchAngle.x)
-            angle.x = limitPitchAngle.x;
-        else if (xAngle > 180f && xAngle < limitPitchAngle.y)
-            angle.x = limitPitchAngle.y;
+        if (xAngle < 180f && xAngle > pitchAngleLimit.x)
+            angle.x = pitchAngleLimit.x;
+        else if (xAngle > 180f && xAngle < pitchAngleLimit.y)
+            angle.x = pitchAngleLimit.y;
 
         cameraTargetTransform.localEulerAngles = angle;
 

@@ -20,7 +20,7 @@ public class EnemyScanComponent : MonoBehaviour
     public Action<Player> OnFoundPlayerAction;
     public Action OnLostPlayerAction;
 
-    public float AttackRange => 1f;
+    public float AttackRange => 1.5f;
 
     public bool IsOutOfAttackRange
     {

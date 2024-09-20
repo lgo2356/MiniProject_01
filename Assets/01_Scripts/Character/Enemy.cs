@@ -10,6 +10,12 @@ public partial class Enemy : Character, IDamagable
     [SerializeField]
     private WeaponActionData attackAactionData;
 
+    [SerializeField]
+    private GameObject swordPrefab;
+
+    [SerializeField]
+    private GameObject shieldPrefab;
+
     #region Public Method
     public Action<Enemy> OnDead;
     #endregion
@@ -18,13 +24,14 @@ public partial class Enemy : Character, IDamagable
     private HpComponent hpComponent;
     private EnemyMoveState moveState;
     private EnemyScanComponent scanComponent;
-    private Collider attackCollider;
     #endregion
 
     #region Valuable
     private List<Material> materialList;
     private List<Color> originColorList;
-    private List<GameObject> hittedList;
+    private Transform swordSlotTransform;
+    private Transform shieldSlotTransform;
+    private Sword_Enemy sword;
     #endregion
 
     #region Coroutine
@@ -47,7 +54,6 @@ public partial class Enemy : Character, IDamagable
 
         materialList = new();
         originColorList = new();
-        hittedList = new();
 
         Renderer[] renderers = GetComponentsInChildren<Renderer>();
 
@@ -59,70 +65,30 @@ public partial class Enemy : Character, IDamagable
                 originColorList.Add(material.color);
             }
         }
-
-        attackCollider = transform.FindChildByName("AttackBox")
-            .GetComponent<Collider>();
-        attackCollider.enabled = false;
     }
 
     private void Start()
     {
+        swordSlotTransform = transform.FindChildByName("WeaponSlot_Sword");
+        shieldSlotTransform = transform.FindChildByName("WeaponSlot_Shield");
+
+        if (swordPrefab != null)
+        {
+            GameObject go = Instantiate(swordPrefab, swordSlotTransform);
+            sword = go.GetComponent<Sword_Enemy>();
+        }
+
+        if (shieldPrefab != null)
+        {
+            GameObject go = Instantiate(shieldPrefab, shieldSlotTransform);
+        }
+
         StaggerFrameManager.Instance.AddAnimator(gameObject.GetInstanceID(), animator);
         GameRuleManager.Instance.RegisterEnemy(this);
 
         patrolCoroutine = StartCoroutine(Coroutine_Patrol(0f));
-        //moveState.Destination = GetRandomPosition();
-        //moveState.MoveSpeed = 1f;
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.layer != LayerMask.NameToLayer("Player"))
-        {
-            return;
-        }
-
-        foreach (GameObject go in hittedList)
-        {
-            if (go == other.gameObject)
-                return;
-        }
-
-        hittedList.Add(other.gameObject);
-
-        if (other.gameObject.TryGetComponent<IDamagable>(out IDamagable damagable))
-        {
-            Vector3 hitPoint = attackCollider.ClosestPoint(other.transform.position);  // World (로컬 * 월드 * 뷰 * 프로젝션)
-            hitPoint = other.transform.InverseTransformPoint(hitPoint);  // 로컬 * 월드 * 월드 역행렬 => 로컬
-
-            damagable.Damage(gameObject, null, hitPoint, attackAactionData);
-        }
-
-        if (other.gameObject.TryGetComponent(out IBlockable blockable))
-        {
-            bool isBlocked = blockable.IsBlocked(gameObject);
-
-            if (isBlocked)
-            {
-                animator.SetTrigger("DoHit");
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-
-    }
-
-    public void EnableAttackCollider()
-    {
-        attackCollider.enabled = true;
-    }
-
-    public void DisableAttackCollider()
-    {
-        attackCollider.enabled = false;
-        hittedList.Clear();
+        Block();
     }
 
     public void Damage(GameObject attacker, Sword causer, Vector3 hitPoint, WeaponActionData actionData)
@@ -264,7 +230,7 @@ public partial class Enemy : Character, IDamagable
                 moveState.Destination = transform.position;
                 moveState.MoveSpeed = 0f;
 
-                Attack();
+                //Attack();
 
                 yield return wait;
             }
@@ -280,16 +246,14 @@ public partial class Enemy : Character, IDamagable
 
     private void Attack()
     {
-        //if (isComboEnabled)
-        //{
-        //    isComboEnabled = false;
-        //    isComboExist = true;
-
-        //    return;
-        //}
         isComboExist = true;
 
         animator.SetBool("Attack", true);
+    }
+
+    private void Block()
+    {
+        animator.SetBool("Block", true);
     }
 
     private void OnDrawGizmosSelected()

@@ -7,6 +7,8 @@ public partial class Enemy
 
     private int comboIndex = 0;
 
+    public int ComboIndex { get => comboIndex; }
+
     private void Begin_Attack()
     {
         if (isComboExist == false)
@@ -36,11 +38,11 @@ public partial class Enemy
 
     private void Begin_Collision()
     {
-        EnableAttackCollider();
+        sword.EnableCollision();
     }
 
     private void End_Collision()
     {
-        DisableAttackCollider();
+        sword.DisableCollision();
     }
 }

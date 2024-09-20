@@ -387,6 +387,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: AttackBox
       objectReference: {fileID: 0}
+    - target: {fileID: 3797216828954990276, guid: 3f5db560cee1aae4696185645cc5fb3e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6315570683280880532, guid: 3f5db560cee1aae4696185645cc5fb3e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.86016893
