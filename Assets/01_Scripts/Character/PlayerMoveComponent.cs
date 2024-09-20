@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerMoveState : MonoBehaviour
+public class PlayerMoveComponent : MonoBehaviour
 {
     [SerializeField]
     private string cameraTargetName = "CameraTarget";

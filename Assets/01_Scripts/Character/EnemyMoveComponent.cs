@@ -6,33 +6,36 @@ using UnityEngine;
  */
 public class EnemyMoveComponent : MonoBehaviour
 {
-    public Vector3 Destination;
-    public float MoveSpeed;
-
     private Animator animator;
+
+    private Vector3 destination;
+    private float moveSpeed;
+
+    public Vector3 Destination => destination;
+    public float MoveSpeed => moveSpeed;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        
-        Destination = transform.position;
+
+        destination = transform.position;
     }
 
     private void Update()
     {
-        if (Vector3.Distance(Destination, transform.position) < 0.1f)
+        if (Vector3.Distance(destination, transform.position) < 0.1f)
         {
             animator.SetFloat("SpeedZ", 0f);
         }
         else
         {
-            animator.SetFloat("SpeedZ", MoveSpeed);
+            animator.SetFloat("SpeedZ", moveSpeed);
 
-            Vector3 lookDirection = Destination - transform.position;
+            Vector3 lookDirection = destination - transform.position;
             Quaternion lookRotation = Quaternion.LookRotation(lookDirection.normalized, Vector3.up);
 
             transform.rotation = lookRotation;
-            transform.position += transform.forward * MoveSpeed * Time.deltaTime;
+            transform.position += transform.forward * moveSpeed * Time.deltaTime;
         }
     }
 
@@ -40,22 +43,24 @@ public class EnemyMoveComponent : MonoBehaviour
     {
         animator.SetFloat("SpeedZ", 0f);
 
-        Destination = transform.position;
+        destination = transform.position;
     }
 
-    private IEnumerator Coroutine_Enable(float delay)
+    public void SetMove(Vector3 destination)
     {
-        yield return new WaitForSeconds(delay);
-
-        enabled = true;
+        this.destination = destination;
     }
 
-    private Vector3 GetRandomPosition()
+    public void SetMove(Vector3 destination, float moveSpeed)
     {
-        float x = UnityEngine.Random.Range(-10f, 10f);
-        float z = UnityEngine.Random.Range(-8.5f, 8.5f);
+        this.destination = destination;
+        this.moveSpeed = moveSpeed;
+    }
 
-        return new Vector3(x, 0f, z);
+    public void StopMove()
+    {
+        destination = transform.position;
+        moveSpeed = 0f;
     }
 
     private void OnDrawGizmosSelected()
@@ -64,6 +69,6 @@ public class EnemyMoveComponent : MonoBehaviour
             return;
 
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(Destination, 0.25f);
+        Gizmos.DrawSphere(destination, 0.25f);
     }
 }

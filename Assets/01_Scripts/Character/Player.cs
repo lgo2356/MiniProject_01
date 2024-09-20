@@ -27,7 +27,7 @@ public partial class Player : Character, IDamagable, IBlockable
     private Transform swordHolsterTransform;
     private Transform swordSlotTransform;
     private Transform shieldSlotTransform;
-    private PlayerMoveState moveState;
+    private PlayerMoveComponent moveComponent;
     private HpComponent hpComponent;
 
     /**
@@ -42,7 +42,7 @@ public partial class Player : Character, IDamagable, IBlockable
     {
         rigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
-        moveState = GetComponent<PlayerMoveState>();
+        moveComponent = GetComponent<PlayerMoveComponent>();
         hpComponent = GetComponent<HpComponent>();
     }
 

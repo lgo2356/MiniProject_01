@@ -30,7 +30,7 @@ public class EnemyPatrolComponent : MonoBehaviour
 
         bool isFirst = true;
 
-        moveComponent.Destination = transform.position;
+        moveComponent.SetMove(transform.position);
 
         while (true)
         {
@@ -46,8 +46,7 @@ public class EnemyPatrolComponent : MonoBehaviour
 
                 yield return new WaitForSeconds(waitTime);
 
-                moveComponent.Destination = GetRandomPosition();
-                moveComponent.MoveSpeed = 1f;
+                moveComponent.SetMove(GetRandomPosition(), 1f);
             }
 
             yield return wait;

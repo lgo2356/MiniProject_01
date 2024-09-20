@@ -16,7 +16,7 @@ public partial class Enemy : Character, IDamagable
     [SerializeField]
     private GameObject shieldPrefab;
 
-    #region Public Method
+    #region Public Valuable
     public Action<Enemy> OnDead;
     #endregion
 
@@ -177,8 +177,7 @@ public partial class Enemy : Character, IDamagable
 
         patrolComponent.StartPatrol(3f);
 
-        moveComponent.Destination = transform.position;
-        moveComponent.MoveSpeed = 0f;
+        moveComponent.StopMove();
     }
 
     private IEnumerator Coroutine_ChasePlayer(Player player)
@@ -189,8 +188,7 @@ public partial class Enemy : Character, IDamagable
         {
             if (Vector3.Distance(player.transform.position, transform.position) <= scanComponent.AttackRange)
             {
-                moveComponent.Destination = transform.position;
-                moveComponent.MoveSpeed = 0f;
+                moveComponent.StopMove();
 
                 //Attack();
 
@@ -198,8 +196,7 @@ public partial class Enemy : Character, IDamagable
             }
             else
             {
-                moveComponent.Destination = player.transform.position;
-                moveComponent.MoveSpeed = 2f;
+                moveComponent.SetMove(player.transform.position, 2f);
             }
 
             yield return null;

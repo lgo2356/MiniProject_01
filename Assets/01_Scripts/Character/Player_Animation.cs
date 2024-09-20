@@ -63,7 +63,7 @@ public partial class Player
         if (isAttacking)
             return;
 
-        moveState.enabled = false;
+        moveComponent.enabled = false;
         isAttacking = true;
 
         animator.SetBool("Attack", true);
@@ -169,7 +169,7 @@ public partial class Player
     {
         comboIndex = 0;
 
-        moveState.enabled = true;
+        moveComponent.enabled = true;
 
         isAttacking = false;
         animator.SetBool("Attack", false);
@@ -189,12 +189,12 @@ public partial class Player
     #region Hit Animation Events
     private void Begin_Hit()
     {
-        moveState.enabled = false;
+        moveComponent.enabled = false;
     }
 
     private void End_Hit()
     {
-        moveState.enabled = true;
+        moveComponent.enabled = true;
     }
     #endregion
 
