@@ -371,6 +371,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1779770265290920163, guid: 3f5db560cee1aae4696185645cc5fb3e, type: 3}
+      propertyPath: maxHp
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 3476637290057582668, guid: 3f5db560cee1aae4696185645cc5fb3e, type: 3}
       propertyPath: scanRange
       value: 5
@@ -935,6 +939,14 @@ PrefabInstance:
     - target: {fileID: 6424080646038380223, guid: c2a1b3a0d1486d04b988b87b70b5fe54, type: 3}
       propertyPath: maxHp
       value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8122805832514596615, guid: c2a1b3a0d1486d04b988b87b70b5fe54, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 307d291bd898798489baccf4d380759a, type: 3}
+    - target: {fileID: 8122805832514596615, guid: c2a1b3a0d1486d04b988b87b70b5fe54, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9204827497187789135, guid: c2a1b3a0d1486d04b988b87b70b5fe54, type: 3}
       propertyPath: m_LocalPosition.x

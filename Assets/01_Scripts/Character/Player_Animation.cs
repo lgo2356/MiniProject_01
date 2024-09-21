@@ -66,7 +66,18 @@ public partial class Player
         moveComponent.enabled = false;
         isAttacking = true;
 
-        animator.SetBool("Attack", true);
+        if (isCounterAttackTiming)
+        {
+            Debug.Log("Counter Attack!");
+
+            isCounterAttackTiming = false;
+
+            animator.SetBool("CounterAttack", true);
+        }
+        else
+        {
+            animator.SetBool("Attack", true);
+        }
     }
 
     private void Update_KeyInputShieldBlock()
@@ -108,11 +119,9 @@ public partial class Player
     private void Begin_Equip()
     {
         sword.transform.parent.DetachChildren();
-
         sword.transform.position = Vector3.zero;
         sword.transform.rotation = Quaternion.identity;
         sword.transform.localScale = Vector3.one;
-
         sword.transform.SetParent(swordSlotTransform, false);
     }
 
@@ -175,6 +184,20 @@ public partial class Player
         animator.SetBool("Attack", false);
     }
 
+    private void Begin_CounterAttack()
+    {
+
+    }
+
+    private void End_CounterAttack()
+    {
+        moveComponent.enabled = true;
+
+        isAttacking = false;
+
+        animator.SetBool("CounterAttack", false);
+    }
+
     private void Begin_Collision()
     {
         sword.EnableCollision();
@@ -201,5 +224,15 @@ public partial class Player
     private void Begin_ShieldBlock()
     {
         isShieldBlocking = true;
+    }
+
+    private void Begin_JustGuard()
+    {
+        isJustGuarding = true;
+    }
+
+    private void End_JustGuard()
+    {
+        isJustGuarding = false;
     }
 }

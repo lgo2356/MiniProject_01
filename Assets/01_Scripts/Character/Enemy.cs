@@ -22,10 +22,12 @@ public partial class Enemy : Character, IDamagable
 
     #region Component
     private HpComponent hpComponent;
+    private CharacterStateComponent stateComponent;
     private EnemyMoveComponent moveComponent;
     private EnemyScanComponent scanComponent;
     private EnemyPatrolComponent patrolComponent;
     private EnemyChaseComponent chaseComponent;
+    private EnemyDamagedComponent damagedComponent;
     #endregion
 
     #region Valuable
@@ -40,10 +42,13 @@ public partial class Enemy : Character, IDamagable
     {
         animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody>();
+
+        stateComponent = GetComponent<CharacterStateComponent>();
         hpComponent = GetComponent<HpComponent>();
         moveComponent = GetComponent<EnemyMoveComponent>();
         patrolComponent = GetComponent<EnemyPatrolComponent>();
         chaseComponent = GetComponent<EnemyChaseComponent>();
+        damagedComponent = GetComponent<EnemyDamagedComponent>();
         
         scanComponent = GetComponent<EnemyScanComponent>();
         {
@@ -75,6 +80,30 @@ public partial class Enemy : Character, IDamagable
         {
             GameObject go = Instantiate(swordPrefab, swordSlotTransform);
             sword = go.GetComponent<Sword_Enemy>();
+            
+            sword.DamageResultCallback += (result) =>
+            {
+                switch (result)
+                {
+                    case DamageResult.Success:
+                    {
+                        OnAttackSuccess();
+                    }
+                    break;
+
+                    case DamageResult.Blocked:
+                    {
+                        OnAttackBlocked();
+                    }
+                    break;
+
+                    case DamageResult.JustBlocked:
+                    {
+                        OnAttackJustBlocked();
+                    }
+                    break;
+                }
+            };
         }
 
         if (shieldPrefab != null)
@@ -86,24 +115,46 @@ public partial class Enemy : Character, IDamagable
         GameRuleManager.Instance.RegisterEnemy(this);
 
         patrolComponent.StartPatrol();
-
-        Block();
     }
 
-    public void Damage(GameObject attacker, Sword causer, Vector3 hitPoint, WeaponActionData actionData)
+    private void OnAttackSuccess()
+    {
+        Debug.Log("AttackSuccess");
+    }
+
+    private void OnAttackBlocked()
+    {
+        Debug.Log("AttackBlocked");
+    }
+
+    private void OnAttackJustBlocked()
+    {
+        Debug.Log("AttackJustBlocked");
+
+        animator.SetTrigger("DoHit");
+
+        //stateComponent.SetSturnedState();
+    }
+
+    public void Damage(GameObject attacker, Sword causer, Vector3 hitPoint, WeaponActionData actionData, Action<DamageResult> callback)
     {
         patrolComponent.StopPatrol();
 
-        animator.SetFloat("SpeedZ", 0f);
+        DamageResult result = damagedComponent.TryDamage();
 
-        hpComponent.Damage(actionData.Power);
-        
-        foreach (Material material in materialList)
+        if (result == DamageResult.Success)
         {
-            material.color = Color.red;
+            hpComponent.Damage(actionData.Power);
+        }
+        else
+        {
+            animator.SetTrigger("DoShieldBlockImpact");
+            return;
         }
 
-        StartCoroutine(RestoreColor(0.15f));
+        animator.SetFloat("SpeedZ", 0f);
+
+        SetDamagedColor();
 
         StaggerFrameManager.Instance.Delay(actionData.StaggerFrame);
 
@@ -148,6 +199,16 @@ public partial class Enemy : Character, IDamagable
         rigidbody.isKinematic = true;
     }
 
+    private void SetDamagedColor()
+    {
+        foreach (Material material in materialList)
+        {
+            material.color = Color.red;
+        }
+
+        StartCoroutine(RestoreColor(0.15f));
+    }
+
     private IEnumerator RestoreColor(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -176,18 +237,6 @@ public partial class Enemy : Character, IDamagable
         patrolComponent.StartPatrol(3f);
 
         moveComponent.StopMove();
-    }
-
-    private void Attack()
-    {
-        isComboExist = true;
-
-        animator.SetBool("Attack", true);
-    }
-
-    private void Block()
-    {
-        animator.SetBool("Block", true);
     }
 
     private void OnDrawGizmosSelected()

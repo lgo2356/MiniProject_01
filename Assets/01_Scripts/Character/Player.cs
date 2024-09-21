@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -37,6 +38,8 @@ public partial class Player : Character, IDamagable, IBlockable
     private Quaternion rotation;
     private Transform cameraTargetTransform;
     private bool isShieldBlocking = false;
+    private bool isJustGuarding = false;
+    private bool isCounterAttackTiming = false;
 
     private void Awake()
     {
@@ -78,50 +81,6 @@ public partial class Player : Character, IDamagable, IBlockable
         Update_KeyInputShieldBlock();
     }
 
-    public void Damage(GameObject attacker, Sword causer, Vector3 hitPoint, WeaponActionData actionData)
-    {
-        ResetFlag();
-
-        if (isShieldBlocking)
-        {
-            animator.SetTrigger("DoShieldBlockImpact");
-            return;
-        }
-
-        hpComponent.Damage(actionData.Power);
-
-        if (hpComponent.IsDead == false)
-        {
-            animator.SetTrigger("DoHit");
-        }
-        else
-        {
-            animator.SetTrigger("DoDeath");
-            rigidbody.useGravity = false;
-            rigidbody.isKinematic = true;
-            gameObject.GetComponent<Collider>().enabled = false;
-
-            OnDead?.Invoke(this);
-        }
-    }
-
-    public bool IsBlocked(GameObject attacker)
-    {
-        return isShieldBlocking;
-    }
-
-    private void LockCursor()
-    {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-    }
-
-    private void UnlockCursor()
-    {
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-    }
-
     private void Update_CamearTarget()
     {
         float mouseX = Input.GetAxis("Mouse X");
@@ -148,5 +107,79 @@ public partial class Player : Character, IDamagable, IBlockable
 
         cameraTargetTransform.localEulerAngles = new(angle.x, 0, 0);
         transform.rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0);
+    }
+
+    public void Damage(GameObject attacker, Sword causer, Vector3 hitPoint, WeaponActionData actionData, Action<DamageResult> callback)
+    {
+        ResetFlag();
+
+        if (isJustGuarding)
+        {
+            if (actionData.Particle != null)
+            {
+                GameObject go = Instantiate(actionData.Particle, transform, false);
+                go.transform.localPosition = hitPoint + actionData.ParticleOffset;
+                go.transform.localScale = actionData.ParticleScale;
+            }
+
+            StartCoroutine(Coroutine_CounterAttackTiming());
+
+            callback?.Invoke(DamageResult.JustBlocked);
+
+            return;
+        }
+
+        if (isShieldBlocking)
+        {
+            animator.SetTrigger("DoShieldBlockImpact");
+
+            callback?.Invoke(DamageResult.Blocked);
+
+            return;
+        }
+
+        hpComponent.Damage(actionData.Power);
+
+        callback?.Invoke(DamageResult.Success);
+
+        if (hpComponent.IsDead == false)
+        {
+            animator.SetTrigger("DoHit");
+        }
+        else
+        {
+            animator.SetTrigger("DoDeath");
+            rigidbody.useGravity = false;
+            rigidbody.isKinematic = true;
+            gameObject.GetComponent<Collider>().enabled = false;
+
+            OnDead?.Invoke(this);
+        }
+    }
+
+    public bool IsBlocked(GameObject attacker)
+    {
+        return isShieldBlocking;
+    }
+
+    private IEnumerator Coroutine_CounterAttackTiming()
+    {
+        isCounterAttackTiming = true;
+
+        yield return new WaitForSeconds(1f);
+
+        isCounterAttackTiming = false;
+    }
+
+    private void LockCursor()
+    {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    private void UnlockCursor()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 }

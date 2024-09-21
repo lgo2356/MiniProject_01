@@ -9,23 +9,6 @@ public partial class Enemy
 
     public int ComboIndex { get => comboIndex; }
 
-    private void Begin_Attack()
-    {
-        if (isComboExist == false)
-            return;
-
-        //isComboExist = false;
-
-        comboIndex++;
-        animator.SetTrigger("DoNextCombo");
-    }
-
-    private void End_Attack()
-    {
-        comboIndex = 0;
-        animator.SetBool("Attack", false);
-    }
-
     private void Begin_Combo()
     {
         isComboEnabled = true;

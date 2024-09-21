@@ -1,4 +1,5 @@
 using Cinemachine;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ public class Sword_Enemy : Weapon
 {
     [SerializeField]
     private WeaponActionData[] actionDatas;
+
+    public Action<DamageResult> DamageResultCallback;
 
     /**
      * Compoent
@@ -64,7 +67,7 @@ public class Sword_Enemy : Weapon
             Vector3 hitPoint = collider.ClosestPoint(other.transform.position);  // World (로컬 * 월드 * 뷰 * 프로젝션)
             hitPoint = other.transform.InverseTransformPoint(hitPoint);  // 로컬 * 월드 * 월드 역행렬 => 로컬
 
-            damagable.Damage(ownerObject, null, hitPoint, actionData);
+            damagable.Damage(ownerObject, null, hitPoint, actionData, DamageResultCallback);
         }
     }
 

@@ -88,14 +88,14 @@ ModelImporter:
       - time: 0.6265356
         functionName: Begin_Attack
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 8ced6eed7902e684ba1aa8a44633aa9f, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 81c49aef58aac6b4e8be58646454fdf7, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.96871406
         functionName: End_Attack
         data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 8ced6eed7902e684ba1aa8a44633aa9f, type: 3}
+        objectReferenceParameter: {fileID: 11500000, guid: 81c49aef58aac6b4e8be58646454fdf7, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

@@ -134,7 +134,7 @@ MonoBehaviour:
     StaggerFrame: 0
     CameraShakeDuration: 0
     CameraShakeDirection: {x: 0, y: 0, z: 0}
-    Particle: {fileID: 0}
+    Particle: {fileID: 5024009746357069194, guid: 124cfdec1bd1608478824d14ec012f86, type: 3}
     ParticleOffset: {x: 0, y: 0, z: 0}
     ParticleScale: {x: 0, y: 0, z: 0}
   - Power: 20

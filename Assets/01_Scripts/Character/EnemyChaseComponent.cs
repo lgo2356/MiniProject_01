@@ -3,15 +3,18 @@ using UnityEngine;
 
 public class EnemyChaseComponent : MonoBehaviour
 {
-    private EnemyScanComponent scanComponent;
+    [SerializeField]
+    private float criticalRange = 1.2f;
+
     private EnemyMoveComponent moveComponent;
+    private EnemyCombatComponent combatComponent;
 
     private Coroutine chaseCoroutine;
 
     private void Awake()
     {
-        scanComponent = GetComponent<EnemyScanComponent>();
         moveComponent = GetComponent<EnemyMoveComponent>();
+        combatComponent = GetComponent<EnemyCombatComponent>();
     }
 
     public void StartChase(GameObject target)
@@ -26,15 +29,19 @@ public class EnemyChaseComponent : MonoBehaviour
 
     private IEnumerator Coroutine_ChasePlayer(GameObject target)
     {
-        WaitForSeconds wait = new WaitForSeconds(2f);
+        WaitForSeconds wait = new(2f);
 
         while (true)
         {
-            if (Vector3.Distance(target.transform.position, transform.position) <= scanComponent.AttackRange)
+            if (Vector3.Distance(target.transform.position, transform.position) <= criticalRange)
             {
                 moveComponent.StopMove();
 
+                StopChase();
+
                 //Attack();
+                //TODO: Chase -> Idle -> Combat
+                combatComponent.StartCombat(target);
 
                 yield return wait;
             }

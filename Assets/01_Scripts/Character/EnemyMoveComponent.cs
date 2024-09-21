@@ -9,6 +9,7 @@ public class EnemyMoveComponent : MonoBehaviour
     private Animator animator;
 
     private Vector3 destination;
+    private GameObject lookTarget;
     private float moveSpeed;
 
     public Vector3 Destination => destination;
@@ -31,7 +32,17 @@ public class EnemyMoveComponent : MonoBehaviour
         {
             animator.SetFloat("SpeedZ", moveSpeed);
 
-            Vector3 lookDirection = destination - transform.position;
+            Vector3 lookDirection;
+
+            if (lookTarget != null)
+            {
+                lookDirection = lookTarget.transform.position - transform.position;
+            }
+            else
+            {
+                lookDirection = destination - transform.position;
+            }
+            
             Quaternion lookRotation = Quaternion.LookRotation(lookDirection.normalized, Vector3.up);
 
             transform.rotation = lookRotation;
@@ -48,19 +59,31 @@ public class EnemyMoveComponent : MonoBehaviour
 
     public void SetMove(Vector3 destination)
     {
+        enabled = true;
+
         this.destination = destination;
     }
 
     public void SetMove(Vector3 destination, float moveSpeed)
     {
-        this.destination = destination;
+        SetMove(destination);
+
         this.moveSpeed = moveSpeed;
+    }
+
+    public void SetMove(Vector3 destination, float moveSpeed, GameObject lookTarget)
+    {
+        SetMove(destination, moveSpeed);
+
+        this.lookTarget = lookTarget;
     }
 
     public void StopMove()
     {
+        enabled = false;
+
         destination = transform.position;
-        moveSpeed = 0f;
+        moveSpeed = 2f;
     }
 
     private void OnDrawGizmosSelected()

@@ -58,7 +58,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.8145833
-        functionName: Begin_ShieldBlock
+        functionName: Begin_Shield
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 8ced6eed7902e684ba1aa8a44633aa9f, type: 3}
         floatParameter: 0
