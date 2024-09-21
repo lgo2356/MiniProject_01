@@ -66,10 +66,18 @@ public partial class Player
         moveComponent.enabled = false;
         isAttacking = true;
 
+        if (IsAllowRiposte)
+        {
+            IsAllowRiposte = false;
+
+            animator.SetBool("Riposte", true);
+            OnStartRiposte?.Invoke();
+
+            return;
+        }
+
         if (isCounterAttackTiming)
         {
-            Debug.Log("Counter Attack!");
-
             isCounterAttackTiming = false;
 
             animator.SetBool("CounterAttack", true);
@@ -136,11 +144,9 @@ public partial class Player
     private void Begin_Unequip()
     {
         sword.transform.parent.DetachChildren();
-
         sword.transform.position = Vector3.zero;
         sword.transform.rotation = Quaternion.identity;
         sword.transform.localScale = Vector3.one;
-
         sword.transform.SetParent(swordHolsterTransform, false);
     }
 
@@ -186,7 +192,7 @@ public partial class Player
 
     private void Begin_CounterAttack()
     {
-
+        sword.IsCritical = true;
     }
 
     private void End_CounterAttack()
@@ -195,7 +201,23 @@ public partial class Player
 
         isAttacking = false;
 
+        sword.IsCritical = false;
+
         animator.SetBool("CounterAttack", false);
+    }
+
+    private void Begin_Riposte()
+    {
+
+    }
+
+    private void End_Riposte()
+    {
+        moveComponent.enabled = true;
+
+        isAttacking = false;
+
+        animator.SetBool("Riposte", false);
     }
 
     private void Begin_Collision()

@@ -100,59 +100,6 @@ Transform:
   - {fileID: 6200721342221114802}
   m_Father: {fileID: 499903303713718016}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &340557107096439155
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7663030548062182490}
-  - component: {fileID: 1437773392362323988}
-  m_Layer: 6
-  m_Name: YBot_Retarget
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7663030548062182490
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340557107096439155}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 9204827497187789135}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1437773392362323988
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340557107096439155}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 69c660277a7abda4c94c84801b8288be, type: 3}
-  m_Controller: {fileID: 9100000, guid: 211409089ef85004da9698a8626f19b3, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &391104690693906396
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,7 +372,6 @@ Transform:
   - {fileID: 1413889639241517674}
   - {fileID: 754617433907624124}
   - {fileID: 5197781218408767439}
-  - {fileID: 7663030548062182490}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!95 &8122805832514596615
@@ -543,6 +489,7 @@ MonoBehaviour:
   shieldPrefab: {fileID: 4673569360129911192, guid: f461decfbd89c954b901e3b02980b581, type: 3}
   mouseSpeed: 0.25
   pitchAngleLimit: {x: 20, y: 340}
+  IsAllowRiposte: 0
 --- !u!1 &1578988648127180301
 GameObject:
   m_ObjectHideFlags: 0

@@ -187,6 +187,42 @@ public partial class Enemy : Character, IDamagable
         }
     }
 
+    public void CriticalDamage(GameObject attacker, Vector3 hitPoint, WeaponActionData actionData, Action<DamageResult> callback)
+    {
+        patrolComponent.StopPatrol();
+
+        SetDamagedColor();
+
+        if (actionData.Particle != null)
+        {
+            GameObject go = Instantiate(actionData.Particle, transform, false);
+            go.transform.localPosition = hitPoint + actionData.ParticleOffset;
+            go.transform.localScale = actionData.ParticleScale;
+        }
+
+        if (hpComponent.IsDead)
+        {
+            animator.SetTrigger("DoDeath");
+            gameObject.GetComponent<Collider>().enabled = false;
+
+            OnDead?.Invoke(this);
+        }
+        else
+        {
+            transform.LookAt(attacker.transform, Vector3.up);
+
+            animator.SetTrigger("DoStunned");
+            stateComponent.SetStunnedState();
+
+            rigidbody.isKinematic = false;
+
+            float launch = rigidbody.drag * actionData.KnockbackDist * 10f;
+            rigidbody.AddForce(-transform.forward * launch);
+
+            StartCoroutine(Coroutine_RestoreIsKinemetics(5));
+        }
+    }
+
     private IEnumerator Coroutine_RestoreIsKinemetics(int frame)
     {
         WaitForFixedUpdate wait = new();

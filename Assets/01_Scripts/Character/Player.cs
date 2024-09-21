@@ -41,6 +41,9 @@ public partial class Player : Character, IDamagable, IBlockable
     private bool isJustGuarding = false;
     private bool isCounterAttackTiming = false;
 
+    public bool IsAllowRiposte;
+    public Action OnStartRiposte;
+
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -155,6 +158,11 @@ public partial class Player : Character, IDamagable, IBlockable
 
             OnDead?.Invoke(this);
         }
+    }
+
+    public void CriticalDamage(GameObject attacker, Vector3 hitPoint, WeaponActionData actionData, Action<DamageResult> callback)
+    {
+
     }
 
     public bool IsBlocked(GameObject attacker)

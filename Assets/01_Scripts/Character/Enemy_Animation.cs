@@ -28,4 +28,9 @@ public partial class Enemy
     {
         sword.DisableCollision();
     }
+
+    private void Riposte_Hit()
+    {
+        
+    }
 }

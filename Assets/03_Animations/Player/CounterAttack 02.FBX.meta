@@ -522,6 +522,13 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.18653844
+        functionName: Begin_CounterAttack
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 8ced6eed7902e684ba1aa8a44633aa9f, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1

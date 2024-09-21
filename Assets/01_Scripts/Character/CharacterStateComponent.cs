@@ -5,7 +5,7 @@ public enum StateType
 {
     Idle = 0,
     Equip, 
-    Attack, Guard, GuardBroken, Damaged, Sturned, Down, Dead,
+    Attack, Guard, GuardBroken, Damaged, Stunned, Down, Dead,
 }
 
 public class CharacterStateComponent : MonoBehaviour
@@ -20,7 +20,7 @@ public class CharacterStateComponent : MonoBehaviour
     public bool GuardState { get => currentStateType == StateType.Guard; }
     public bool GuardBrokenState { get => currentStateType == StateType.GuardBroken; }
     public bool DamagedState { get => currentStateType == StateType.Damaged; }
-    public bool SturnedState { get => currentStateType == StateType.Sturned; }
+    public bool StunnedState { get => currentStateType == StateType.Stunned; }
     public bool DownState { get => currentStateType == StateType.Down; }
     public bool DeadState { get => currentStateType == StateType.Dead; }
 
@@ -30,7 +30,7 @@ public class CharacterStateComponent : MonoBehaviour
     public void SetGuardState() => ChangeStateType(StateType.Guard);
     public void SetGuardBrokenState() => ChangeStateType(StateType.GuardBroken);
     public void SetDamagedState() => ChangeStateType(StateType.Damaged);
-    public void SetSturnedState() => ChangeStateType(StateType.Sturned);
+    public void SetStunnedState() => ChangeStateType(StateType.Stunned);
     public void SetDownState() => ChangeStateType(StateType.Down);
     public void SetDeadState() => ChangeStateType(StateType.Dead);
 

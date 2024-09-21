@@ -22,22 +22,6 @@ public class EnemyScanComponent : MonoBehaviour
 
     public float AttackRange => 1.5f;
 
-    public bool IsOutOfAttackRange
-    {
-        get
-        {
-            if (scanPlayer == null)
-                return true;
-
-            return Vector3.Distance(scanPlayer.transform.position, transform.position) > attackRange;
-        }
-    }
-
-    private void Start()
-    {
-        
-    }
-
     private void Update()
     {
         Update_Scan();
