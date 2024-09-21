@@ -133,12 +133,15 @@ public partial class Enemy : Character, IDamagable
 
         animator.SetTrigger("DoHit");
 
-        //stateComponent.SetSturnedState();
+        sword.DisableCollision();
     }
 
     public void Damage(GameObject attacker, Sword causer, Vector3 hitPoint, WeaponActionData actionData, Action<DamageResult> callback)
     {
         patrolComponent.StopPatrol();
+        stateComponent.SetDamagedState();
+
+        sword.DisableCollision();
 
         DamageResult result = damagedComponent.TryDamage();
 
@@ -190,6 +193,9 @@ public partial class Enemy : Character, IDamagable
     public void CriticalDamage(GameObject attacker, Vector3 hitPoint, WeaponActionData actionData, Action<DamageResult> callback)
     {
         patrolComponent.StopPatrol();
+        stateComponent.SetDamagedState();
+
+        sword.DisableCollision();
 
         SetDamagedColor();
 
@@ -212,6 +218,7 @@ public partial class Enemy : Character, IDamagable
             transform.LookAt(attacker.transform, Vector3.up);
 
             animator.SetTrigger("DoStunned");
+
             stateComponent.SetStunnedState();
 
             rigidbody.isKinematic = false;

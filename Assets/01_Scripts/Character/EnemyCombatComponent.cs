@@ -34,6 +34,8 @@ public class EnemyCombatComponent : MonoBehaviour
     //TODO: 랜덤으로 공격이나 방어를 한다.
     private void Attack()
     {
+        stateComponent.SetAttackState();
+
         animator.SetBool("IsAttack", true);
     }
 

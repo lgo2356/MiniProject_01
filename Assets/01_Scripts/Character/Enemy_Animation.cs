@@ -21,12 +21,20 @@ public partial class Enemy
 
     private void Begin_Collision()
     {
+        if (stateComponent.AttackState == false)
+            return;
+
         sword.EnableCollision();
     }
 
     private void End_Collision()
     {
         sword.DisableCollision();
+    }
+
+    private void Begin_Stunned()
+    {
+        //sword.DisableCollision();
     }
 
     private void Riposte_Hit()

@@ -63,7 +63,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.20208333
+      - time: 0.03626269
         functionName: Riposte_Hit
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 151df7a9c98360f4fadc740e2cec234b, type: 3}
