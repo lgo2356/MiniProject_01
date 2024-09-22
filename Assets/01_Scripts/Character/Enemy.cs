@@ -190,7 +190,7 @@ public partial class Enemy : Character, IDamagable
         }
     }
 
-    public void CriticalDamage(GameObject attacker, Vector3 hitPoint, WeaponActionData actionData, Action<DamageResult> callback)
+    public void CounterAttackDamage(GameObject attacker, Vector3 hitPoint, WeaponActionData actionData, Action<DamageResult> callback)
     {
         patrolComponent.StopPatrol();
         stateComponent.SetDamagedState();

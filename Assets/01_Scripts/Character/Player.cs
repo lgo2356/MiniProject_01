@@ -162,7 +162,7 @@ public partial class Player : Character, IDamagable, IBlockable
         }
     }
 
-    public void CriticalDamage(GameObject attacker, Vector3 hitPoint, WeaponActionData actionData, Action<DamageResult> callback)
+    public void CounterAttackDamage(GameObject attacker, Vector3 hitPoint, WeaponActionData actionData, Action<DamageResult> callback)
     {
 
     }

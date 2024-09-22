@@ -70,7 +70,7 @@ public class Sword : Weapon
             {
                 IsCritical = false;
 
-                damagable.CriticalDamage(ownerObject, hitPoint, actionData, null);
+                damagable.CounterAttackDamage(ownerObject, hitPoint, actionData, null);
             }
             else
             {

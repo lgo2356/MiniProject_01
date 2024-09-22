@@ -39,6 +39,20 @@ public partial class Enemy
 
     private void Riposte_Hit()
     {
-        
+        hpComponent.Damage(201f);
+    }
+
+    private void End_RiposteVictim()
+    {
+        if (hpComponent.IsDead)
+        {
+            gameObject.GetComponent<Collider>().enabled = false;
+
+            OnDead?.Invoke(this);
+        }
+        else
+        {
+            Debug.Log("No");
+        }
     }
 }
