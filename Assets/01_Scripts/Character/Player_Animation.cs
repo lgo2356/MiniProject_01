@@ -208,7 +208,7 @@ public partial class Player
 
     private void Begin_Riposte()
     {
-
+        IsRiposte = true;
     }
 
     private void End_Riposte()
@@ -216,6 +216,7 @@ public partial class Player
         moveComponent.enabled = true;
 
         isAttacking = false;
+        IsRiposte = false;
 
         animator.SetBool("Riposte", false);
     }

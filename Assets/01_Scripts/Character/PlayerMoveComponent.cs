@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerMoveComponent : MonoBehaviour
@@ -41,12 +42,20 @@ public class PlayerMoveComponent : MonoBehaviour
     {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
+
+        if (Mathf.Abs(horizontal) <= 0f && Mathf.Abs(vertical) <= 0f)
+            return;
+
         bool isRun = Input.GetButton("Run");
         float speed = isRun ? runSpeed : walkSpeed;
 
         // 플레이어 이동 방향 계산
-        direction = (Vector3.forward * vertical) + (Vector3.right * horizontal);
+        Transform body = transform.FindChildByName("Body");
+        body.rotation = Quaternion.Euler(0, cameraTarget.eulerAngles.y, 0);
+
+        direction = (body.forward * vertical) + (body.right * horizontal);
         direction = direction.normalized * speed;
+
         transform.Translate(direction * Time.deltaTime);
 
         // 애니메이션

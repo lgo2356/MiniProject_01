@@ -42,6 +42,7 @@ public partial class Player : Character, IDamagable, IBlockable
     private bool isCounterAttackTiming = false;
 
     public bool IsAllowRiposte;
+    public bool IsRiposte = false;
     public Action OnStartRiposte;
 
     private void Awake()
@@ -105,11 +106,12 @@ public partial class Player : Character, IDamagable, IBlockable
             angle.x = pitchAngleLimit.y;
 
         cameraTargetTransform.localEulerAngles = angle;
-
         rotation = Quaternion.Lerp(cameraTargetTransform.rotation, rotation, mouseSpeed * Time.deltaTime);
 
-        cameraTargetTransform.localEulerAngles = new(angle.x, 0, 0);
-        transform.rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0);
+        cameraTargetTransform.localEulerAngles = new(angle.x, rotation.eulerAngles.y, 0);
+
+        //cameraTargetTransform.localEulerAngles = new(angle.x, 0, 0);
+        //transform.rotation = Quaternion.Euler(0, rotation.eulerAngles.y, 0);
     }
 
     public void Damage(GameObject attacker, Sword causer, Vector3 hitPoint, WeaponActionData actionData, Action<DamageResult> callback)

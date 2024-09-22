@@ -48,16 +48,11 @@ public class EnemyStunnedComponent : MonoBehaviour
             if (collider.gameObject.TryGetComponent(out Player player))
             {
                 player.IsAllowRiposte = true;
-                player.OnStartRiposte += OnStartRiposte;
+                player.OnStartRiposte = OnStartRiposte;
 
                 allowRiposteObject = player.gameObject;
             }
         }
-    }
-
-    private void OnEnable()
-    {
-        
     }
 
     private void OnStartRiposte()
