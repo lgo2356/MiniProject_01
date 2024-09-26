@@ -44,6 +44,7 @@ public partial class Player : Character, IDamagable, IBlockable
     public bool IsAllowRiposte;
     public bool IsRiposte = false;
     public Action OnStartRiposte;
+    public Action OnStartVictim;
 
     private void Awake()
     {
@@ -74,7 +75,12 @@ public partial class Player : Character, IDamagable, IBlockable
         StaggerFrameManager.Instance.AddAnimator(gameObject.GetInstanceID(), animator);
         GameRuleManager.Instance.RegisterPlayer(this);
 
-        LockCursor();        
+        LockCursor();
+
+        OnStartVictim = () =>
+        {
+            animator.SetTrigger("DoRiposteVictim");
+        };
     }
 
     private void Update()
@@ -153,7 +159,12 @@ public partial class Player : Character, IDamagable, IBlockable
         }
         else
         {
-            animator.SetTrigger("DoDeath");
+            //animator.SetTrigger("DoDeath");
+            animator.SetTrigger("DoStunned");
+
+            Enemy enemy = attacker.GetComponent<Enemy>();
+            enemy.OnPlayerDead?.Invoke(this);
+
             rigidbody.useGravity = false;
             rigidbody.isKinematic = true;
             gameObject.GetComponent<Collider>().enabled = false;

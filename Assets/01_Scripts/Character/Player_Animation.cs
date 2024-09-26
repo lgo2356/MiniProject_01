@@ -258,4 +258,9 @@ public partial class Player
     {
         isJustGuarding = false;
     }
+
+    private void End_RiposteVictim()
+    {
+
+    }
 }

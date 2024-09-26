@@ -18,6 +18,7 @@ public partial class Enemy : Character, IDamagable
 
     #region Public Valuable
     public Action<Enemy> OnDead;
+    public Action<Player> OnPlayerDead;
     #endregion
 
     #region Component
@@ -115,6 +116,16 @@ public partial class Enemy : Character, IDamagable
         GameRuleManager.Instance.RegisterEnemy(this);
 
         patrolComponent.StartPatrol();
+
+
+        OnPlayerDead += (player) =>
+        {
+            Debug.Log("Player Killed");
+
+            animator.SetBool("IsAttack", false);
+            scanComponent.enabled = false;
+            animator.SetBool("Riposte", true);
+        };
     }
 
     private void OnAttackSuccess()

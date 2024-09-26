@@ -958,7 +958,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6424080646038380223, guid: c2a1b3a0d1486d04b988b87b70b5fe54, type: 3}
       propertyPath: maxHp
-      value: 200
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8095934489828184504, guid: c2a1b3a0d1486d04b988b87b70b5fe54, type: 3}
       propertyPath: m_LocalRotation.w

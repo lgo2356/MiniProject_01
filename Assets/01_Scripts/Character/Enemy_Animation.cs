@@ -37,6 +37,18 @@ public partial class Enemy
         //sword.DisableCollision();
     }
 
+    private void Begin_Riposte()
+    {
+        GameObject go = GameObject.Find("Player");
+        Player player = go.GetComponent<Player>();
+        player.OnStartVictim?.Invoke();
+    }
+
+    private void End_Riposte()
+    {
+        animator.SetBool("Riposte", false);
+    }
+
     private void Riposte_Hit()
     {
         hpComponent.Damage(201f);
