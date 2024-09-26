@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 
 public partial class Player
@@ -259,8 +260,24 @@ public partial class Player
         isJustGuarding = false;
     }
 
+    private void Riposte_Hit()
+    {
+        CinemachineImpulseSource impulseSource = GetComponent<CinemachineImpulseSource>();
+        impulseSource.m_ImpulseDefinition.m_ImpulseDuration = 0.3f;
+        impulseSource.m_DefaultVelocity = new Vector3(0.8f, 1, 0);
+        impulseSource.GenerateImpulse(0.3f);
+    }
+
+    private void Riposte_Hit2()
+    {
+        CinemachineImpulseSource impulseSource = GetComponent<CinemachineImpulseSource>();
+        impulseSource.m_ImpulseDefinition.m_ImpulseDuration = 0.2f;
+        impulseSource.m_DefaultVelocity = new Vector3(0.2f, 1, 0);
+        impulseSource.GenerateImpulse(0.2f);
+    }
+
     private void End_RiposteVictim()
     {
-
+        
     }
 }

@@ -103,6 +103,12 @@ public partial class Enemy : Character, IDamagable
                         OnAttackJustBlocked();
                     }
                     break;
+
+                    case DamageResult.Dead:
+                    {
+                        OnAttackKill();
+                    }
+                    break;
                 }
             };
         }
@@ -116,16 +122,6 @@ public partial class Enemy : Character, IDamagable
         GameRuleManager.Instance.RegisterEnemy(this);
 
         patrolComponent.StartPatrol();
-
-
-        OnPlayerDead += (player) =>
-        {
-            Debug.Log("Player Killed");
-
-            animator.SetBool("IsAttack", false);
-            scanComponent.enabled = false;
-            animator.SetBool("Riposte", true);
-        };
     }
 
     private void OnAttackSuccess()
@@ -145,6 +141,15 @@ public partial class Enemy : Character, IDamagable
         animator.SetTrigger("DoHit");
 
         sword.DisableCollision();
+    }
+
+    private void OnAttackKill()
+    {
+        Debug.Log("Player Killed");
+
+        animator.SetBool("IsAttack", false);
+        scanComponent.enabled = false;
+        animator.SetBool("Riposte", true);
     }
 
     public void Damage(GameObject attacker, Sword causer, Vector3 hitPoint, WeaponActionData actionData, Action<DamageResult> callback)

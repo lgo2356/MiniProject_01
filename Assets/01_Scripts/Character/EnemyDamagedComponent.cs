@@ -1,11 +1,9 @@
-using System.Collections;
-using UnityEditor;
 using UnityEngine;
 
 public enum DamageResult
 {
     None = 0,
-    Success, Blocked, JustBlocked,
+    Success, Blocked, JustBlocked, Dead,
 }
 
 public class EnemyDamagedComponent : MonoBehaviour

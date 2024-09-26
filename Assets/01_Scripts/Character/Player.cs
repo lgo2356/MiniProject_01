@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -16,6 +17,9 @@ public partial class Player : Character, IDamagable, IBlockable
 
     [SerializeField]
     private Vector2 pitchAngleLimit = new(20, 340);
+
+    [SerializeField]
+    private CinemachineVirtualCamera vc;
 
     /**
      * Public Method
@@ -40,6 +44,7 @@ public partial class Player : Character, IDamagable, IBlockable
     private bool isShieldBlocking = false;
     private bool isJustGuarding = false;
     private bool isCounterAttackTiming = false;
+    private bool isCameraUpdate = true;
 
     public bool IsAllowRiposte;
     public bool IsRiposte = false;
@@ -93,6 +98,9 @@ public partial class Player : Character, IDamagable, IBlockable
 
     private void Update_CamearTarget()
     {
+        if (isCameraUpdate == false)
+            return;
+
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
 
@@ -151,15 +159,16 @@ public partial class Player : Character, IDamagable, IBlockable
 
         hpComponent.Damage(actionData.Power);
 
-        callback?.Invoke(DamageResult.Success);
-
         if (hpComponent.IsDead == false)
         {
             animator.SetTrigger("DoHit");
+
+            callback?.Invoke(DamageResult.Success);
         }
         else
         {
             //animator.SetTrigger("DoDeath");
+            isCameraUpdate = false;
             animator.SetTrigger("DoStunned");
 
             Enemy enemy = attacker.GetComponent<Enemy>();
@@ -170,6 +179,10 @@ public partial class Player : Character, IDamagable, IBlockable
             gameObject.GetComponent<Collider>().enabled = false;
 
             OnDead?.Invoke(this);
+
+            vc.gameObject.SetActive(false);
+
+            callback?.Invoke(DamageResult.Dead);
         }
     }
 

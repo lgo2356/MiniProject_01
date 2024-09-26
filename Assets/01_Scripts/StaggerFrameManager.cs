@@ -20,14 +20,14 @@ public class StaggerFrameManager : MonoBehaviour
         animatorTable = new();
     }
 
-    private void Start()
-    {
-        
-    }
-
     public void Delay(int frame)
     {
         StartCoroutine(Coroutine_StartDelay(frame));
+    }
+
+    public void DelayAndSlow(int frame, float releaseSpeed)
+    {
+        StartCoroutine(Coroutine_StartDelay(frame, releaseSpeed));
     }
 
     public void AddAnimator(int key, Animator animator)
@@ -38,7 +38,7 @@ public class StaggerFrameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator Coroutine_StartDelay(int frame)
+    private IEnumerator Coroutine_StartDelay(int frame, float releaseSpeed = 1f)
     {
         foreach (Animator animator in animatorTable.Values)
         {
@@ -54,7 +54,7 @@ public class StaggerFrameManager : MonoBehaviour
         foreach (Animator animator in animatorTable.Values)
         {
             if (animator != null)
-                animator.speed = 1f;
+                animator.speed = releaseSpeed;
         }
     }
 }

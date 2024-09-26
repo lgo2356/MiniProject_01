@@ -24,11 +24,6 @@ public class GameRuleManager : MonoBehaviour
         enemyTable = new();
     }
 
-    private void Start()
-    {
-        
-    }
-
     public void RegisterPlayer(Player player)
     {
         this.player = player;
@@ -48,6 +43,9 @@ public class GameRuleManager : MonoBehaviour
     private void OnPlayerDead(Player player)
     {
         Debug.Log("You Died.");
+
+        StaggerFrameManager.Instance.DelayAndSlow(25, 0.7f);
+        //StaggerFrameManager.Instance.Delay(20);
 
         GameOverText.gameObject.SetActive(true);
         GameOverText.text = "You Died.";
